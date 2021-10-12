@@ -1,0 +1,47 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<time.h>
+#define _CRT_SECURE_NO_WARNINGS 
+
+void swap(int* a, int* b) {
+    int k;
+    k = *a;
+    *a = *b;
+    *b = k;
+}
+void quick(int a[], int s, int e) {
+    int pivot = a[s];
+    int i = s, j = e;
+    while (i < j) {
+        while (pivot >= a[i] && i < e) i++;
+        while (pivot <= a[j] && j > s) j--;
+        if (i < j) {
+            swap(&a[i], &a[j]);
+        }
+        else {
+            swap(&a[s], &a[j]);
+        }
+
+    }
+    if (s < j - 1) quick(a, s, j - 1);
+    if (j + 1 < e) quick(a, j + 1, e);
+}
+
+int main() {
+    int i, n;
+    scanf("%d", &n);
+    srand(time(NULL));
+
+    int* a = malloc(sizeof(int) * (n + 1));
+    
+    for (i = 1; i <= n; i++) {
+        a[i] = i;
+    }
+    for (i = 1; i <= n; i++) {
+        swap(&a[rand()%n], &a[rand()%n]);
+    }
+    quick(a, 1, n);
+    for (i = 1; i <= n; i++) {
+        printf("%d ", a[i]);
+    }
+}
