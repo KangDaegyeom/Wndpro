@@ -1,0 +1,71 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+#define _CRT_SECURE_NO_WARNINGS 
+
+void swap(int* a, int* b) {
+    int k;
+    k = *a;
+    *a = *b;
+    *b = k;
+}
+void quick(int a[], int s, int e) {
+	int pivot = a[s];
+	int i = s, j = e;
+	while (i < j) {
+		while (pivot >= a[i] && i < e) i++;
+		while (pivot <= a[j] && j > s) j--;
+		if (i < j) {
+			swap(&a[i], &a[j]);
+		}
+		else {
+			swap(&a[s], &a[j]);
+		}
+	}
+	if (s < j - 1) quick(a, s, j - 1);
+	if (j + 1 < e) quick(a, j + 1, e);
+}
+void merge(int a[], int s, int m, int e){
+	int* b = malloc(sizeof(int) * (e + 1));
+	int i=s, j=m+1, k=s;
+	while(i<=m && j<=e){
+		if(a[i] < a[j]){
+			b[k]=a[i]; i++;
+		}else{
+			b[k]=a[j]; j++;
+		}
+		k++;
+	}
+	while(i<=m){
+		b[k]=a[i]; k++;	i++;
+	}
+	while(j<=e){
+		b[k]=a[j]; k++;	j++;
+	}
+	for(i=s;i<=e;i++) a[i]=b[i];
+}
+void mergesort(int a[], int s, int e){
+	if(s<e){
+		int m=(s+e)/2;
+		mergesort(a,s,m);
+		mergesort(a,m+1,e);
+		merge(a,s,m,e);
+	}
+}
+int main(int argc, char** argv) {
+	int i, n=500000;
+	int* a = malloc(sizeof(int) * (n + 1));
+	for(i = 1; i <= n; i++){
+		scanf("%d", &a[i]);
+	}
+	if(strcmp(argv[1],"quick") == 0){
+		quick(a, 1, n);
+	}else if(strcmp(argv[1], "merge") == 0){
+		mergesort(a,1,n);
+	}
+	for (i = 1; i <= n; i++) {
+		printf("%d ", a[i]);
+	}
+	
+	return 0;
+}
