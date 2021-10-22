@@ -53,7 +53,7 @@ void mergesort(int a[], int s, int e){
 	}
 }
 int main(int argc, char** argv) {
-	int i, n=500000;
+	//int i, n=500000;
 	int* a = malloc(sizeof(int) * (n + 1));
 	for(i = 1; i <= n; i++){
 		scanf("%d", &a[i]);
