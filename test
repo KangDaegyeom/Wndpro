@@ -57,6 +57,7 @@ int main(int argc, char** argv) {
 	int* a = malloc(sizeof(int) * (n + 1));
 	for(i = 1; i <= n; i++){
 		scanf("%d", &a[i]);
+
 	}
 	if(strcmp(argv[1],"quick") == 0){
 		quick(a, 1, n);
