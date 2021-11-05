@@ -1,0 +1,91 @@
+#define max(a, b)	(((a) > (b)) ? (a) : (b))
+
+#define min(a, b)	(((a) > (b)) ? (a) : (b))
+
+#define maxn 300
+
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h>
+
+int n;
+int W[maxn + 2][maxn + 2];
+int D[maxn + 2][maxn + 2];
+int P[maxn + 2][maxn + 2];
+int arr[maxn + 2][maxn + 2];
+int count;
+int vcnt;
+
+void floyd2(int n){
+	int i, j, k;
+	for(i = 1; i <= n; i++)
+		for(j = 1; j <= n; j++)
+			P[i][j];
+	for(i = 1; i <= n; i++)
+		for(j = 1; j <= n; j++)
+			D[i][j] = W[i][j];
+	
+	for(k = 1; k <= n; k++){
+		for(i = 1; i <= n; i++)
+			for(j = 1; j <= n; j++)
+				if(D[i][k] + D[k][j] < D[i][j]){
+					P[i][j] = k;
+					D[i][j] = D[i][k] + D[k][j];
+				}
+		}
+}
+
+void path(int q, int r){
+	if(P[q][r] != 0){
+		path(q, P[q][r]);
+		arr[vcnt][count] = P[q][r];
+		count++;
+		path(P[q][r], r);
+	}
+}
+
+int main(int argc, char *argv[]){
+	scanf("%d ", &n);
+	for(int i = 1; i <= n; i++){
+		for(int j = 1; j <= n; j++){
+			scanf("%d ", &W[i][j]);
+			if((W[i][j] == 0) && (i != j)) W[i][j]=99999;
+		}
+	}
+	floyd2(n);
+	if(strcmp(argv[1], "array") == 0){
+		printf("%d\n", n);
+		for(int i = 1; i <= n; i++){
+			for(int j = 1; j <= n; j++){
+				printf("%d ", D[i][j]);
+			}
+			printf("\n");
+		}
+		for(int i = 1; i <= n; i++){
+			for(int j = 1; j <= n; j++){
+				printf("%d ", P[i][j]);
+			}
+			printf("\n");
+		}
+	}
+	else if(strcmp(argv[1], "path") == 0){
+		for(int i = 1; i <= n; i++){
+			for(int j = 1; j <= n; j++){
+				count = 0;
+				path(i, j);
+				int k = 0;
+				if(count == 0)
+					printf("0 ");
+				else
+					printf("%d ", count);
+				while(arr[vcnt][k]!=0){
+					printf("%d ", arr[vcnt][k]);
+					k++;
+				}
+				printf("\n");
+				vcnt++;
+			}
+		}
+	}
+	return 0;
+}
